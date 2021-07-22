@@ -50,7 +50,12 @@
           <div class="calls-month">
             <div class="calls-month-title">Calls this month</div>
             <div class="calls-graph-wrapper">
-              <div class="calls-graph"></div>
+              <div class="calls-graph">
+                <PieChart :pieData="pieData" />
+                <div class="calls-numbers">
+                  <span class="big">{{ info.calls }}</span> / 28
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -99,14 +104,27 @@
 </template>
 
 <script>
+import PieChart from "./PieChart.vue";
+
 export default {
   name: "Home",
+  components: {
+    PieChart,
+  },
   data() {
     return {
       info: {},
       metricsMenu: ["Overview", "Detailing", "Calls"],
       informationMenu: ["About profiles", "Detailing targets"],
     };
+  },
+  computed: {
+    pieData() {
+      return [
+        { color: "#f68b16", value: (this.info.calls / 28) * 100 },
+        { color: "#ddd", value: 100 },
+      ];
+    },
   },
   created() {
     this.info =
@@ -193,13 +211,6 @@ export default {
   align-items: center;
 }
 
-.calls-graph {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background-color: blue;
-}
-
 .topic-breakdown {
   width: 100%;
   margin-top: 1.5rem;
@@ -249,5 +260,14 @@ span.icon.other {
   width: 100%;
   height: 15px;
   margin-bottom: 1rem;
+}
+
+span.big {
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.calls-numbers {
+  text-align: center;
 }
 </style>
