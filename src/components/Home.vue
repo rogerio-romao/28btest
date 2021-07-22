@@ -1,7 +1,7 @@
 <template>
-  <div class="home">
+  <main class="home" @click="getInfo">
     <div class="wrapper">
-      <div class="menu">
+      <nav class="menu">
         <div class="submenu">
           <div class="menu-title">Welcome,</div>
           <div class="menu-item">
@@ -20,11 +20,11 @@
             {{ info }}
           </div>
         </div>
-      </div>
-      <div class="overview">
+      </nav>
+      <section class="overview">
         <div class="overview-title">Overview</div>
         <div class="calls">
-          <div class="calls-info">
+          <article class="calls-info">
             <div class="calls-info-title">Next Call</div>
             <div class="calls-info-wrapper">
               <div class="calls-info-title">Date:</div>
@@ -46,8 +46,8 @@
                 <div>{{ info.profile }}</div>
               </div>
             </div>
-          </div>
-          <div class="calls-month">
+          </article>
+          <aside class="calls-month">
             <div class="calls-month-title">Calls this month</div>
             <div class="calls-graph-wrapper">
               <div class="calls-graph">
@@ -57,9 +57,9 @@
                 </div>
               </div>
             </div>
-          </div>
+          </aside>
         </div>
-        <div class="topic-breakdown">
+        <section class="topic-breakdown">
           <div class="topic-breakdown-title">Detailing topic breakdown</div>
           <div class="topics">
             <div class="topic">
@@ -87,29 +87,31 @@
               Other
             </div>
           </div>
-        </div>
-        <div class="bar-graphs">
+        </section>
+        <section class="bar-graphs">
           <div class="bar-graphs-title">Avg. all</div>
-          <div class="bar-graph"></div>
+          <BarChart :stats="info.avgAll" />
           <div class="bar-graphs-title">Cautious</div>
-          <div class="bar-graph"></div>
+          <BarChart :stats="info.cautious" />
           <div class="bar-graphs-title">Complaints</div>
-          <div class="bar-graph"></div>
+          <BarChart :stats="info.complaints" />
           <div class="bar-graphs-title">Confident</div>
-          <div class="bar-graph"></div>
-        </div>
-      </div>
+          <BarChart :stats="info.confident" />
+        </section>
+      </section>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>
 import PieChart from "./PieChart.vue";
+import BarChart from "./BarChart.vue";
 
 export default {
   name: "Home",
   components: {
     PieChart,
+    BarChart,
   },
   data() {
     return {
@@ -127,10 +129,15 @@ export default {
     },
   },
   created() {
-    this.info =
-      this.$store.state.data[
-        Math.floor(Math.random() * this.$store.state.data.length)
-      ];
+    this.getInfo();
+  },
+  methods: {
+    getInfo() {
+      this.info =
+        this.$store.state.data[
+          Math.floor(Math.random() * this.$store.state.data.length)
+        ];
+    },
   },
 };
 </script>
@@ -252,14 +259,6 @@ span.icon.safety {
 
 span.icon.other {
   background-color: #dddddd;
-}
-
-.bar-graph {
-  border: 1px solid black;
-  background-color: #ddd;
-  width: 100%;
-  height: 15px;
-  margin-bottom: 1rem;
 }
 
 span.big {
